@@ -7,7 +7,7 @@
  - Early satges of productivity, product should be complete around **May 2023**
 
 
-## Comit One:
+## Commit One:
 - First commit includes a functioning, simple calculator.
 - Simple operations and general astetics.
 - Next commit should include more operations and more efficeint calcuations. 
