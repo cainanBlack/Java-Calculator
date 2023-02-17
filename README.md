@@ -2,6 +2,6 @@
 ### Cainan Black - Belhaven University
 <i>Java Calculator used for Senior Project.</i>
 
-## Description of project:
- - End result will be a Functioning Java Calculator that is usable on most devices
- - Early satges of productivity, product should be complete around **May 2023**
+## Slides for Weekly Presentations:
+- Simply a place to show and document my weekly presentations on my work.
+
