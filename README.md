@@ -32,7 +32,7 @@
 ## Commit Three:
 <i>Great progress, still some issues!</i>
 
-- Implemented the Shunting Yard Algorithmn to sort the equation created by the user into an easy to evaluate format. Once in the correct format, the equation is evalueated in order of operations and the final value is retunred as a string to be concatinated to the text field as the result. 
+- Implemented the Shunting Yard Algorithm to sort the equation created by the user into an easy to evaluate format. Once in the correct format, the equation is evalueated in order of operations and the final value is retunred as a string to be concatinated to the text field as the result. 
 - Because everything is being done after the user enters values, the operations for the text field are a lot smoother now. All vlaues are just entered as string and the final string is evaluated. 
 
 ### Goals for the future:
