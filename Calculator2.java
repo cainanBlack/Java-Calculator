@@ -15,12 +15,13 @@ public class Calculator2 implements ActionListener{
 	//JTextField textfield;
 	JTextField mainTextfield;
 	JButton[] numberButtons = new JButton[10];
-	JButton[] functionButtons = new JButton[12];
+	JButton[] functionButtons = new JButton[16];
 	JButton addButton, subButton, mulButton, divButton, numberButton;
-	JButton decButton, equButton, delButton, clrButton, negButton;
-	JButton sinButton, cosButton, tanButton;
+	JButton decButton, equButton, delButton, clrButton, negButton, piButton;
+	JButton sinButton, cosButton, tanButton, LperButton, RperButton, expButton;
 	JPanel panel;
 	JPanel functionPanel;
+	JPanel parenPanel;
 	
 	// Two fonts that are implemented in the Buttons and TextField
 	Font myFont = new Font("Calbri", Font.BOLD,30);
@@ -37,7 +38,7 @@ public class Calculator2 implements ActionListener{
 		// Configuration for JFrame
 		frame = new JFrame("Calculator");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(450, 550);
+		frame.setSize(450, 625);
 		frame.setLayout(null);
 		frame.getContentPane().setBackground(Color.DARK_GRAY);
 		frame.setBackground(Color.ORANGE);
@@ -67,10 +68,14 @@ public class Calculator2 implements ActionListener{
 		equButton = new JButton("=");
 		delButton = new JButton("Delete");
 		clrButton = new JButton("Clear");
-		negButton = new JButton("+/-");
+		negButton = new JButton("neg");
 		sinButton = new JButton("sin");
 		cosButton = new JButton("cos");
 		tanButton = new JButton("tan");
+		LperButton = new JButton("(");
+		RperButton = new JButton(")");
+		expButton = new JButton("^");
+		piButton = new JButton("π");
 		
 		// Adding the function buttons to the array
 		functionButtons[0] = addButton;
@@ -85,11 +90,15 @@ public class Calculator2 implements ActionListener{
 		functionButtons[9] = sinButton;
 		functionButtons[10] = cosButton;
 		functionButtons[11] = tanButton;
+		functionButtons[12] = LperButton;
+		functionButtons[13] = RperButton;
+		functionButtons[14] = expButton;
+		functionButtons[15] = piButton;
 		
 		
 
 		// Loop that formats the function buttons
-		for(int i = 0; i < 12; i++) {
+		for(int i = 0; i < 16; i++) {
 			functionButtons[i].addActionListener(this);
 			functionButtons[i].setFont(specialFont);
 			functionButtons[i].setFocusable(false);
@@ -110,14 +119,19 @@ public class Calculator2 implements ActionListener{
 		// Creation of JPanel for the number buttons and operations
 		panel = new JPanel();
 		panel.setBounds(50,265,350,300);
-		panel.setLayout(new GridLayout(5,100,8,8));
+		panel.setLayout(new GridLayout(4,100,8,8));
 		panel.setBackground(Color.DARK_GRAY);
 		
 		// JPanel for functions and special operations
 		functionPanel = new JPanel();
 		functionPanel.setBounds(50, 100, 350, 200);
-		functionPanel.setLayout(new GridLayout(4,20,8,8));
+		functionPanel.setLayout(new GridLayout(4,100,8,8));
 		functionPanel.setBackground(Color.DARK_GRAY);	
+		
+		// JPanel for Parentheses
+		parenPanel = new JPanel();
+		parenPanel.setLayout(new GridLayout(1, 100, 8, 8));
+		parenPanel.setBackground(Color.DARK_GRAY);
 		
 		
 		// Placing all of the buttons on the JPanel
@@ -140,11 +154,19 @@ public class Calculator2 implements ActionListener{
 
 		// Adding the special buttons to the functionPanel JPanel
 		functionPanel.add(delButton);
-		functionPanel.add(clrButton);
 		functionPanel.add(negButton);
+		functionPanel.add(clrButton);
 		functionPanel.add(sinButton);
 		functionPanel.add(cosButton);
 		functionPanel.add(tanButton);
+		//functionPanel.add(LperButton);
+		//functionPanel.add(RperButton);
+		functionPanel.add(parenPanel);
+		functionPanel.add(expButton);
+		functionPanel.add(piButton);
+		
+		parenPanel.add(LperButton);
+		parenPanel.add(RperButton);
 		
 		// Color formatting for buttons to make them stand out
 		clrButton.setBackground(LightBlue);
@@ -176,43 +198,68 @@ public class Calculator2 implements ActionListener{
 		}
 		
 		// Adds a decimal to the text field
-		if(e.getSource() == decButton) {
-			mainTextfield.setText(mainTextfield.getText().concat("."));
+		if(e.getSource() == decButton) {			
+			String mainString = mainTextfield.getText();
+			mainTextfield.setText("");
+			for(int i = 0; i < mainString.length() - 2; i ++) {
+				mainTextfield.setText(mainTextfield.getText() + mainString.charAt(i));
+			}
+			mainTextfield.setText(mainTextfield.getText().concat(mainString.charAt(mainString.length()-2)+"."));
 		}
 		
-		// Saves the value of the text field to num1 and clears text field
+		// Adds an addition operator to the expression
 		if(e.getSource() == addButton) {
 			mainTextfield.setText(mainTextfield.getText().concat("+ "));
 		}
 		
-		// Saves the value of the text field to num1 and clears text field
+		// Adds an subtraction operator to the expression
 		if(e.getSource() == subButton) {
 			mainTextfield.setText(mainTextfield.getText().concat("- "));
 		}
 		
-		// Saves the value of the text field to num1 and clears text field
+		// Adds an multiplication operator to the expression
 		if(e.getSource() == mulButton) {
 			mainTextfield.setText(mainTextfield.getText().concat("* "));
 		}
 		
-		// Saves the value of the text field to num1 and clears text field
+		// Adds an division operator to the expression
 		if(e.getSource() == divButton) {
 			mainTextfield.setText(mainTextfield.getText().concat("/ "));
 		}
 		
-		// Sin function that sets the value of num1 to sin of input
+		// Adds an sin operator to the expression
 		if(e.getSource() == sinButton) {
 			mainTextfield.setText(mainTextfield.getText().concat("sin "));
 		}
 		
-		// Cos function that sets the value of num1 to sin of input
+		// Adds an cos operator to the expression
 		if(e.getSource() == cosButton) {
 			mainTextfield.setText(mainTextfield.getText().concat("cos "));
 		}
 		
-		// Tan function that sets the value of num1 to sin of input
+		// Adds an tan operator to the expression
 		if(e.getSource() == tanButton) {
 			mainTextfield.setText(mainTextfield.getText().concat("tan "));
+		}
+		
+		// Adds an opening (left parentheses) to the expression
+		if(e.getSource() == LperButton) {
+			mainTextfield.setText(mainTextfield.getText().concat("( "));
+		}
+		
+		// Adds an closing (right parentheses) to the expression
+		if(e.getSource() == RperButton) {
+			mainTextfield.setText(mainTextfield.getText().concat(") "));
+		}
+		
+		// Adds an exponent symbol to the expression
+		if(e.getSource() == expButton) {
+			mainTextfield.setText(mainTextfield.getText().concat("^ "));
+		}
+		
+		// Adds an π (pi) symbol to the expression
+		if(e.getSource() == piButton) {
+			mainTextfield.setText(mainTextfield.getText().concat("π "));
 		}
 		
 		// If equal button is pressed, goes through cases to determine operation
@@ -240,91 +287,99 @@ public class Calculator2 implements ActionListener{
 		
 		// Changes the value of the sign by multiplying the text field by -1
 		if(e.getSource() == negButton) {
-			String mainString = mainTextfield.getText();
-			mainTextfield.setText("");
-			for(int i = 0; i < mainString.length() - 2; i ++) {
-				mainTextfield.setText(mainTextfield.getText() + mainString.charAt(i));
-			}
-			mainTextfield.setText(mainTextfield.getText().concat("(-"+mainString.charAt(mainString.length()-2)+")"));
+			mainTextfield.setText(mainTextfield.getText().concat("-"));
 		}
 	}
 	
- public static Double shunting_algo(String expression) {
-     Map<String, Integer> precedence = new HashMap<>();
-     precedence.put("+", 1);
-     precedence.put("-", 1);
-     precedence.put("*", 2);
-     precedence.put("/", 2);
-     precedence.put("sin", 3);
-     precedence.put("cos", 3);
-     precedence.put("tan", 3);
+    public static double shunting_algo(String expression) {
+        Map<String, Integer> precedence = new HashMap<>();
+        precedence.put("+", 1);
+        precedence.put("-", 1);
+        precedence.put("*", 2);
+        precedence.put("/", 2);
+        precedence.put("^", 3);
+        precedence.put("sin", 4);
+        precedence.put("cos", 4);
+        precedence.put("tan", 4);
 
-     Deque<Double> operands = new ArrayDeque<>();
-     Deque<String> operators = new ArrayDeque<>();
+        Deque<Double> operands = new ArrayDeque<>();
+        Deque<String> operators = new ArrayDeque<>();
 
-     String[] tokens = expression.split("\\s+");
-     for (String token : tokens) {
-         if (isNumber(token)) {
-             operands.push(Double.parseDouble(token));
-         } else if (precedence.containsKey(token)) {
-             while (!operators.isEmpty() && precedence.get(token) <= precedence.get(operators.peek())) {
-                 evaluateTop(operands, operators);
-             }
-             operators.push(token);
-         } else if (token.equals("(")) {
-             operators.push(token);
-         } else if (token.equals(")")) {
-             while (!operators.peek().equals("(")) {
-                 evaluateTop(operands, operators);
-             }
-             operators.pop();
-         } else if (token.equals("sin") || token.equals("cos") || token.equals("tan")) {
-             operators.push(token);
-         }
-     }
+        String[] tokens = expression.split("\\s+");
+        for (String token : tokens) {
+            if (isNumber(token)) {
+                operands.push(Double.parseDouble(token));
+            } else if (token.equals("π")) {
+                operands.push(Math.PI);
+            } else if (precedence.containsKey(token)) {
+                while (!operators.isEmpty() && !operators.peek().equals("(") && precedence.get(token) <= precedence.get(operators.peek())) {
+                    evaluateTop(operands, operators);
+                }
+                operators.push(token);
+            } else if (token.equals("(")) {
+                operators.push(token);
+            } else if (token.equals(")")) {
+                while (!operators.peek().equals("(")) {
+                    evaluateTop(operands, operators);
+                }
+                operators.pop();
 
-     while (!operators.isEmpty()) {
-         evaluateTop(operands, operators);
-     }
+                if (!operators.isEmpty() && (operators.peek().equals("sin") || operators.peek().equals("cos") || operators.peek().equals("tan"))) {
+                    evaluateTop(operands, operators);
+                }
+            } else if (token.equals("sin") || token.equals("cos") || token.equals("tan")) {
+                operators.push(token);
+            } else if (token.equals("^")) {
+                operators.push(token);
+            }
+        }
 
-     return operands.pop();
- }
+        while (!operators.isEmpty()) {
+            evaluateTop(operands, operators);
+        }
 
- private static boolean isNumber(String token) {
-     try {
-         Double.parseDouble(token);
-         return true;
-     } catch (NumberFormatException e) {
-         return false;
-     }
- }
+        return operands.pop();
+    }
 
- private static void evaluateTop(Deque<Double> operands, Deque<String> operators) {
-     String operator = operators.pop();
-     if (operator.equals("sin")) {
-         operands.push(Math.sin(operands.pop()));
-     } else if (operator.equals("cos")) {
-         operands.push(Math.cos(operands.pop()));
-     } else if (operator.equals("tan")) {
-         operands.push(Math.tan(operands.pop()));
-     } else {
-         double rightOperand = operands.pop();
-         double leftOperand = operands.pop();
-         switch (operator) {
-             case "+":
-                 operands.push(leftOperand + rightOperand);
-                 break;
-             case "-":
-                 operands.push(leftOperand - rightOperand);
-                 break;
-             case "*":
-                 operands.push(leftOperand * rightOperand);
-                 break;
-             case "/":
-                 operands.push(leftOperand / rightOperand);
-                 break;
-         }
-     }
- }
+    private static boolean isNumber(String token) {
+        try {
+            Double.parseDouble(token);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    private static void evaluateTop(Deque<Double> operands, Deque<String> operators) {
+        String operator = operators.pop();
+        if (operator.equals("sin")) {
+            operands.push(Math.sin(operands.pop()));
+        } else if (operator.equals("cos")) {
+            operands.push(Math.cos(operands.pop()));
+        } else if (operator.equals("tan")) {
+            operands.push(Math.tan(operands.pop()));
+        } else if (operator.equals("^")) {
+            double exponent = operands.pop();
+            double base = operands.pop();
+            operands.push(Math.pow(base, exponent));
+        } else {
+            double rightOperand = operands.pop();
+            double leftOperand = operands.pop();
+            switch (operator) {
+                case "+":
+                    operands.push(leftOperand + rightOperand);
+                    break;
+                case "-":
+                    operands.push(leftOperand - rightOperand);
+                    break;
+                case "*":
+                    operands.push(leftOperand * rightOperand);
+                    break;
+                case "/":
+                    operands.push(leftOperand / rightOperand);
+                    break;
+            }
+        }
+    }
 
 }
