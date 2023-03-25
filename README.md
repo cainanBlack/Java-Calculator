@@ -38,3 +38,16 @@
 ### Goals for the future:
 - Add more buttons! (), pi, and ^ hopefully.
 - Look into better design for the interface. 
+
+
+## Commit Four:
+
+### Only a couple hours since commit three, but there has been <i>great progress</i>!
+
+- Added new functions such as: π, exponents, and parenthesis (for order and specification of operations).
+- Added new JPanel to house the parenthesis buttons so that they could be two buttons that are the size of one.
+- Added more code comments to reflect the changing of the functionality of some of the functions.
+
+### Next steps:
+- Finalizing functionality of calculator. (Smoothing over operations and results)
+- Working on UI and making it more appealing. (Cooler colors, maybe? Round Buttons, could be tough but also maybe)
