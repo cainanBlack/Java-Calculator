@@ -51,3 +51,13 @@
 ### Next steps:
 - Finalizing functionality of calculator. (Smoothing over operations and results)
 - Working on UI and making it more appealing. (Cooler colors, maybe? Round Buttons, could be tough but also maybe)
+
+
+## Commit Five:
+
+### Mostly finished product.
+
+All functions are added and working. Now is just time for smoothing out and knocking out final bugs. 
+
+- Added a save and paste button that will allow the user to save the calculated value and reuse it
+- Added slight error handling to the enter button, so that if there is an error in the equation it will out put "Syntax Erorr."
