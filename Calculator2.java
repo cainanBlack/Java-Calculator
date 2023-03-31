@@ -7,57 +7,54 @@ import java.awt.event.*;
 import java.util.*;
 
 
-
 public class Calculator2 implements ActionListener{
 	
 	// Creation of JFrame, TextField, Buttons and Button holders, and JPanel
+
 	JFrame frame;
-	//JTextField textfield;
+	JTextField textfield;
 	JTextField mainTextfield;
 	JButton[] numberButtons = new JButton[10];
-	JButton[] functionButtons = new JButton[16];
+	JButton[] functionButtons = new JButton[20];
 	JButton addButton, subButton, mulButton, divButton, numberButton;
 	JButton decButton, equButton, delButton, clrButton, negButton, piButton;
 	JButton sinButton, cosButton, tanButton, LperButton, RperButton, expButton;
+	JButton modButton, sqrtButton, saveValButton, pasteValButton;
 	JPanel panel;
 	JPanel functionPanel;
 	JPanel parenPanel;
+	JPanel sqrPanel;
 	
 	// Two fonts that are implemented in the Buttons and TextField
 	Font myFont = new Font("Calbri", Font.BOLD,30);
 	Font specialFont = new Font("Calbri", Font.BOLD,15);
+	Font textFont = new Font("Calbri", Font.PLAIN, 25);
 	
+	// New Colors 
+	Color LightBlue = new Color(0, 220, 255);
+
 	// Global variables to hold temporary values for calculation
 	double num1 = 0, num2 = 0, result = 0;
 	String tempNum = "", tempRes = "";
 	char operator = ' ';
+	static String savedVal = "";
+
 	
 	// Creation of the Calculator instance
 	Calculator2(){
 		
 		// Configuration for JFrame
-		frame = new JFrame("Calculator");
+		frame = new JFrame("LightRoast Calculator");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(450, 625);
+		frame.setSize(450, 680);
 		frame.setLayout(null);
 		frame.getContentPane().setBackground(Color.DARK_GRAY);
 		frame.setBackground(Color.ORANGE);
 		
-		// New Colors 
-		Color LightBlue = new Color(0, 220, 255);
-
-		/*
 		// Configuration for back end TextField 
 		textfield = new JTextField();
-		textfield.setBounds(43, 25, 367, 65);
-		textfield.setFont(myFont);
-		textfield.setVisible(false);
-		*/
-		
-		// Configuration for mainTextField
-		mainTextfield = new JTextField();
-		mainTextfield.setBounds(43, 25, 367, 65);
-		mainTextfield.setFont(myFont);
+		textfield.setBounds(33, 25, 383, 65);
+		textfield.setFont(textFont);
 		
 		// Special Button declaration for operations
 		addButton = new JButton("+");
@@ -76,6 +73,10 @@ public class Calculator2 implements ActionListener{
 		RperButton = new JButton(")");
 		expButton = new JButton("^");
 		piButton = new JButton("π");
+		modButton = new JButton("Mod %");
+		sqrtButton = new JButton("√");
+		saveValButton = new JButton("Save");
+		pasteValButton = new JButton("Paste");
 		
 		// Adding the function buttons to the array
 		functionButtons[0] = addButton;
@@ -94,11 +95,15 @@ public class Calculator2 implements ActionListener{
 		functionButtons[13] = RperButton;
 		functionButtons[14] = expButton;
 		functionButtons[15] = piButton;
+		functionButtons[16] = modButton;
+		functionButtons[17] = sqrtButton;
+		functionButtons[18] = saveValButton;
+		functionButtons[19] = pasteValButton;
 		
 		
 
 		// Loop that formats the function buttons
-		for(int i = 0; i < 16; i++) {
+		for(int i = 0; i < 20; i++) {
 			functionButtons[i].addActionListener(this);
 			functionButtons[i].setFont(specialFont);
 			functionButtons[i].setFocusable(false);
@@ -115,16 +120,15 @@ public class Calculator2 implements ActionListener{
 			numberButtons[i].setFocusable(false);
 		}
 		
-		
 		// Creation of JPanel for the number buttons and operations
 		panel = new JPanel();
-		panel.setBounds(50,265,350,300);
+		panel.setBounds(35,315,380,300);
 		panel.setLayout(new GridLayout(4,100,8,8));
 		panel.setBackground(Color.DARK_GRAY);
 		
 		// JPanel for functions and special operations
 		functionPanel = new JPanel();
-		functionPanel.setBounds(50, 100, 350, 200);
+		functionPanel.setBounds(35, 100, 380, 200);
 		functionPanel.setLayout(new GridLayout(4,100,8,8));
 		functionPanel.setBackground(Color.DARK_GRAY);	
 		
@@ -132,6 +136,11 @@ public class Calculator2 implements ActionListener{
 		parenPanel = new JPanel();
 		parenPanel.setLayout(new GridLayout(1, 100, 8, 8));
 		parenPanel.setBackground(Color.DARK_GRAY);
+		
+		// JPanel for save and paste value
+		sqrPanel = new JPanel();
+		sqrPanel.setLayout(new GridLayout(1, 100, 8, 8));
+		sqrPanel.setBackground(Color.DARK_GRAY);
 		
 		
 		// Placing all of the buttons on the JPanel
@@ -159,135 +168,218 @@ public class Calculator2 implements ActionListener{
 		functionPanel.add(sinButton);
 		functionPanel.add(cosButton);
 		functionPanel.add(tanButton);
-		//functionPanel.add(LperButton);
-		//functionPanel.add(RperButton);
-		functionPanel.add(parenPanel);
-		functionPanel.add(expButton);
+		functionPanel.add(modButton);
 		functionPanel.add(piButton);
+		functionPanel.add(sqrPanel);
+		functionPanel.add(parenPanel);
+		functionPanel.add(saveValButton);
+		functionPanel.add(pasteValButton);
 		
+		// Adding Parenthesis to the parenPanel
 		parenPanel.add(LperButton);
 		parenPanel.add(RperButton);
+		
+		// Adding exponent and square root to the sqrPanel
+		sqrPanel.add(expButton);
+		sqrPanel.add(sqrtButton);
 		
 		// Color formatting for buttons to make them stand out
 		clrButton.setBackground(LightBlue);
 		equButton.setBackground(LightBlue);
-		
+		saveValButton.setBackground(LightBlue);
+		pasteValButton.setBackground(LightBlue);
 		
 		// Adding panels to frame and setting frame to Visible
 		frame.add(panel);
 		frame.add(functionPanel);
-		//frame.add(textfield);
-		frame.add(mainTextfield);
-		frame.setVisible(true);
+		frame.add(textfield);
+		frame.setVisible(true);		
 	}
 	
-
+	// Main function
 	public static void main(String[] args) {
 			// Creating Calculator Instance 
 			new Calculator2();
 	}
-	
-
-	public void actionPerformed(ActionEvent e) {
 		
-		// Adds value of button pressed to the text field
-		for(int i = 0; i < 10; i++) {
-			if(e.getSource() == numberButtons[i]) {
-				mainTextfield.setText(mainTextfield.getText().concat(String.valueOf(i)) + " ");
+	
+	// Adds number to textfield
+	public void actionPerformed(ActionEvent e) {
+		String mainString = textfield.getText();
+		
+		// dynamic spacing for digits
+		if (mainString.length() < 2) {
+			for(int i = 0; i < 10; i++) {
+				if(e.getSource() == numberButtons[i]) {
+					textfield.setText(textfield.getText().concat(String.valueOf(i)));
+				}
+			}
+		}else if (Character.isDigit(mainString.charAt(mainString.length() - 2)) | Character.isDigit(mainString.charAt(mainString.length()-1)) | mainString.charAt(mainString.length()-2) != ' ') {
+			for(int i = 0; i < 10; i++) {
+				if(e.getSource() == numberButtons[i]) {
+					textfield.setText(textfield.getText().concat(String.valueOf(i)));
+				}
+			}
+		} else {
+			for(int i = 0; i < 10; i++) {
+				if(e.getSource() == numberButtons[i]) {
+					textfield.setText(textfield.getText().concat(" " + String.valueOf(i)));
+				}
 			}
 		}
 		
 		// Adds a decimal to the text field
 		if(e.getSource() == decButton) {			
-			String mainString = mainTextfield.getText();
-			mainTextfield.setText("");
-			for(int i = 0; i < mainString.length() - 2; i ++) {
-				mainTextfield.setText(mainTextfield.getText() + mainString.charAt(i));
-			}
-			mainTextfield.setText(mainTextfield.getText().concat(mainString.charAt(mainString.length()-2)+"."));
+			textfield.setText(textfield.getText().concat("."));
 		}
 		
 		// Adds an addition operator to the expression
 		if(e.getSource() == addButton) {
-			mainTextfield.setText(mainTextfield.getText().concat("+ "));
+			textfield.setText(textfield.getText().concat(" + "));
 		}
 		
 		// Adds an subtraction operator to the expression
 		if(e.getSource() == subButton) {
-			mainTextfield.setText(mainTextfield.getText().concat("- "));
+			textfield.setText(textfield.getText().concat(" - "));
 		}
 		
 		// Adds an multiplication operator to the expression
 		if(e.getSource() == mulButton) {
-			mainTextfield.setText(mainTextfield.getText().concat("* "));
+			textfield.setText(textfield.getText().concat(" * "));
 		}
 		
 		// Adds an division operator to the expression
 		if(e.getSource() == divButton) {
-			mainTextfield.setText(mainTextfield.getText().concat("/ "));
+			textfield.setText(textfield.getText().concat(" / "));
 		}
 		
 		// Adds an sin operator to the expression
 		if(e.getSource() == sinButton) {
-			mainTextfield.setText(mainTextfield.getText().concat("sin "));
+			textfield.setText(textfield.getText().concat(" sin ( "));
 		}
 		
 		// Adds an cos operator to the expression
 		if(e.getSource() == cosButton) {
-			mainTextfield.setText(mainTextfield.getText().concat("cos "));
+			textfield.setText(textfield.getText().concat(" cos ( "));
 		}
 		
 		// Adds an tan operator to the expression
 		if(e.getSource() == tanButton) {
-			mainTextfield.setText(mainTextfield.getText().concat("tan "));
+			textfield.setText(textfield.getText().concat(" tan ( "));
 		}
 		
 		// Adds an opening (left parentheses) to the expression
 		if(e.getSource() == LperButton) {
-			mainTextfield.setText(mainTextfield.getText().concat("( "));
+			textfield.setText(textfield.getText().concat("( "));
 		}
 		
 		// Adds an closing (right parentheses) to the expression
 		if(e.getSource() == RperButton) {
-			mainTextfield.setText(mainTextfield.getText().concat(") "));
+			textfield.setText(textfield.getText().concat(" ) "));
 		}
 		
 		// Adds an exponent symbol to the expression
 		if(e.getSource() == expButton) {
-			mainTextfield.setText(mainTextfield.getText().concat("^ "));
+			textfield.setText(textfield.getText().concat(" ^ "));
 		}
 		
 		// Adds an π (pi) symbol to the expression
 		if(e.getSource() == piButton) {
-			mainTextfield.setText(mainTextfield.getText().concat("π "));
+			textfield.setText(textfield.getText().concat(" π "));
+		}
+		
+		// Adds an % (modulus) symbol to the expression
+		if(e.getSource() == modButton) {
+			textfield.setText(textfield.getText().concat(" % "));
+		}
+		
+		// Adds a √ symbol to the expression
+		if(e.getSource() == sqrtButton) {
+			textfield.setText(textfield.getText().concat(" √ ( "));
+		}
+		
+		// Clears text field if clear button is pressed
+		if(e.getSource() == clrButton) {
+			textfield.setText("");
+		}
+		
+		// Deletes one number by saving a string and outputting that string -1 char
+		if(e.getSource() == delButton) {
+			mainString = textfield.getText();
+			textfield.setText("");
+			
+			// dynamic spacing for removed digit or space
+			if (Character.isDigit(mainString.charAt(mainString.length() - 2)) | Character.isDigit(mainString.charAt(mainString.length()-1))) {
+				for(int i = 0; i < mainString.length() - 1; i ++) {
+					textfield.setText(textfield.getText() + mainString.charAt(i));
+				}
+			} else {
+				for(int i = 0; i < mainString.length() - 2; i ++) {
+					textfield.setText(textfield.getText() + mainString.charAt(i));
+				}
+			}
+		}
+		
+		// Changes the value of the sign by multiplying the text field by -1
+		if(e.getSource() == negButton) {
+			mainString = textfield.getText();
+			String[] temp = mainString.split(" ");
+			textfield.setText("");
+			for(int i = 0; i < temp.length - 1; i ++) {
+				if(i == 0) {
+					textfield.setText(textfield.getText()+temp[i]);
+				} else {
+				textfield.setText(textfield.getText() +" "+temp[i]);
+				}
+			}
+			
+			
+			try {
+				try {
+					int tempInt = Integer.parseInt(temp[temp.length - 1]);
+					if(temp.length == 1) {
+						textfield.setText(textfield.getText().concat(Integer.toString(tempInt * -1)));
+					} else {
+						textfield.setText(textfield.getText().concat(" "+Integer.toString(tempInt * -1)));
+					}
+				} catch(NumberFormatException ex) {
+					double tempDouble = Double.parseDouble(temp[temp.length - 1]);
+					if(temp.length == 1) {
+						textfield.setText(textfield.getText().concat(" "+Double.toString(tempDouble * -1)));
+					} else {
+						textfield.setText(textfield.getText().concat(" "+Double.toString(tempDouble * -1)));
+					}
+				} }catch(Exception k) {
+				System.out.println("Invalid operator.");
+				}	
+	
+		}
+		
+		// Save Value Button saves the result of the equation as a double
+		if(e.getSource() == saveValButton) { 
+			mainString = textfield.getText();
+			String[] temp = mainString.split("=");
+			savedVal = temp[temp.length - 1];
+		}
+		
+		// Paste Value Button pastes in the saved value
+		if(e.getSource() == pasteValButton) {
+			for(int i = 1; i < savedVal.length(); i ++) {
+				textfield.setText(textfield.getText() + savedVal.charAt(i));
+			}
 		}
 		
 		// If equal button is pressed, goes through cases to determine operation
 		if(e.getSource() == equButton) {	
 
 		// Outputs the calculation by setting the text field to 'result'	
-		String equation = mainTextfield.getText();
-		Double res = shunting_algo(equation);
-		mainTextfield.setText(mainTextfield.getText().concat("= "+String.valueOf(res)));
+		String equation = textfield.getText();
+		try {
+			Double res = shunting_algo(equation);
+			textfield.setText(textfield.getText().concat(" = "+String.valueOf(res)));
+		} catch (Exception k) {
+			textfield.setText("Snytax Error");
 		}
-		
-		// Clears text field if clear button is pressed
-		if(e.getSource() == clrButton) {
-			mainTextfield.setText("");
-		}
-		
-		// Deletes one number by saving a string and outputting that string -1 char
-		if(e.getSource() == delButton) {
-			String mainString = mainTextfield.getText();
-			mainTextfield.setText("");
-			for(int i = 0; i < mainString.length() - 1; i ++) {
-				mainTextfield.setText(mainTextfield.getText() + mainString.charAt(i));
-			}
-		}
-		
-		// Changes the value of the sign by multiplying the text field by -1
-		if(e.getSource() == negButton) {
-			mainTextfield.setText(mainTextfield.getText().concat("-"));
 		}
 	}
 	
@@ -297,7 +389,9 @@ public class Calculator2 implements ActionListener{
         precedence.put("-", 1);
         precedence.put("*", 2);
         precedence.put("/", 2);
+        precedence.put("%", 2);
         precedence.put("^", 3);
+        precedence.put("√", 3);
         precedence.put("sin", 4);
         precedence.put("cos", 4);
         precedence.put("tan", 4);
@@ -362,7 +456,9 @@ public class Calculator2 implements ActionListener{
             double exponent = operands.pop();
             double base = operands.pop();
             operands.push(Math.pow(base, exponent));
-        } else {
+        } else if (operator.equals("√")) {
+        	operands.push(Math.sqrt(operands.pop()));
+    	}else {
             double rightOperand = operands.pop();
             double leftOperand = operands.pop();
             switch (operator) {
@@ -378,8 +474,12 @@ public class Calculator2 implements ActionListener{
                 case "/":
                     operands.push(leftOperand / rightOperand);
                     break;
+                case "%":
+                	operands.push(leftOperand % rightOperand);
+                	break;
             }
         }
     }
 
 }
+
