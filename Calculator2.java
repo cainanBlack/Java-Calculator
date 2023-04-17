@@ -482,4 +482,3 @@ public class Calculator2 implements ActionListener{
     }
 
 }
-
