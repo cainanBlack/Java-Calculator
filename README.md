@@ -13,7 +13,7 @@
 
 ### <b>For WindowsOS:</b>
 
-- Download the 'LightRoast Calculator.jar' file and either run in command prompt with the command: 
+- Download the 'LightRoast Calculator.jar' file and run this command in terminal in the directory that you downloaded the file: 
 
 ``` 
 java -jar 'LightRoast Calculator.jar' 
